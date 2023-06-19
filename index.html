@@ -1,22 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--
+ @license
+ Copyright 2019 Google LLC. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+-->
+<html>
+  <head>
+    <title>Sat-Plan</title>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+    <script src="./node_modules/satellite.js/dist/satellite.js"></script>
+    <script src="./node_modules/satellite.js/dist/satellite.min.js"></script>
+  </head>
+  <body>
+    <div id="heading"> 
+      <h2> Imece Satellite </h2>
+      <p id="tleLines"> </p>
+      <p id="LLA"> </p>
+    </div>
+    <div id="map"></div>
 
-<head>
-  <meta charset="UTF-8">
-  <title>MB's Portfolio</title>
-</head>
-
-<body>
-  <h1>MB's Portfolio</h1>
-  <h2>I'm a Web Developer</h2>
-  <hr />
-  <h3><a href="./public/movie-ranking.html">Movie Ranking Project</a></h3>
-  <img src="./assets/images/movie-ranking.png" height="200" alt="movie ranking project preview"/>
-  <h3><a href="./public/birthday-invite.html">Birthday Invite Project</a></h3>
-  <img src="./assets/images/birthday-invite.png" height="200" alt="birthday invite project preview"/>
-  <hr />
-  <a href="./public/about.html">About Me</a>
-  <a href="./public/contact.html">Contact Me</a>
-</body>
-
+    <!-- 
+      The `defer` attribute causes the callback to execute after the full HTML
+      document has been parsed. For non-blocking uses, avoiding race conditions,
+      and consistent behavior across browsers, consider loading using Promises.
+      See https://developers.google.com/maps/documentation/javascript/load-maps-js-api
+      for more information.
+      -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsCIzO7N5pOS4U0SVvb2VUl3bFiUHepHE&callback=initMap&v=weekly"
+      defer
+    ></script>
+  </body>
 </html>
