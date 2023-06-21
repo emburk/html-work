@@ -1,6 +1,8 @@
 // Global variables
 var trajDraw = false;
-let map;
+let map, gsCircleMap;
+// selected ground station index
+var gsInd = 0;
 
 const data = [
   "IMECE",
@@ -17,8 +19,6 @@ document.getElementById("btn_tglCircle").onclick = function () {
   toggleGsCircle();
 };
 
-document.getElementById("tleLines").innerHTML =
-  "TLE Line1: " + data[1] + "\n" + "<br> TLE Line2: " + data[2];
 // get day of year:
 let dayOfYearTLE = parseFloat(data[1].substring(20, 31));
 let meanMotionTLE = parseFloat(data[2].substring(52, 62));
@@ -56,13 +56,6 @@ function moveMarker(marker) {
     let satLLA = satellite.eciToGeodetic(posEci, satellite.gstime(time));
     let satLL = lla2ll(satLLA);
     marker.setPosition(new google.maps.LatLng(satLL.lat, satLL.lng));
-    document.getElementById("LLA").innerHTML =
-      "Latitude: " +
-      satLL.lat +
-      ", <br>Longitude: " +
-      satLL.lng +
-      ", <br>Altitude: " +
-      satLLA.height;
   }, 2000);
 }
 
@@ -77,7 +70,7 @@ function lla2ll(lla) {
 function initMap() {
   let flightTrajectory = getTrajectory();
   map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 1,
+    zoom: 1.8,
     center: { lat: 0, lng: 0 },
     mapTypeId: "satellite",
   });
@@ -124,15 +117,17 @@ function getDayOfYear(dateIn) {
 
 function drawGsCircle() {
   const nStEcef = getNorm(positionAndVelocity.position);
-  const gsInd = 1;
-  const gsListRad = [
+
+  let gsListRad = [];
+  for (let i = 0; i < gsList.length; i++){
+    gsListRad[i] = 
     {
       latitude: (gsList[gsInd].latitude * Math.PI) / 180,
       longitude: (gsList[gsInd].longitude * Math.PI) / 180,
       height: gsList[gsInd].height,
-    },
-  ];
-  const rGsEcef = satellite.geodeticToEcf(gsListRad[0]);
+    }
+  }
+  const rGsEcef = satellite.geodeticToEcf(gsListRad[gsInd]);
   const nGsEcef = getNorm(rGsEcef);
   const uGsEcef = getUnit(rGsEcef);
   const elevAngle = (5 * Math.PI) / 180;
@@ -140,32 +135,29 @@ function drawGsCircle() {
   const rotAx = getUnit(cross(north, uGsEcef));
   const smallAngle = getNextAngle(nGsEcef, nStEcef, elevAngle);
   let rCircleEcef = rotate(rGsEcef, rotAx, smallAngle);
-  console.log(rGsEcef);
   let rCircleLL = [ecefToLatLon(rCircleEcef)];
   for (let i = 1; i <= 36; i++) {
     rCircleLL[i] = ecefToLatLon(
       rotate(rCircleEcef, uGsEcef, (i * 10 * Math.PI) / 180)
     );
   }
-  console.log(rCircleLL);
-  let circlePath = new google.maps.Polyline({
+  gsCircleMap = new google.maps.Polyline({
     path: rCircleLL,
     geodesic: true,
     strokeColor: "#a3e4d7 ",
     strokeOpacity: 1.0,
     strokeWeight: 1.0,
   });
-  circlePath.setMap(map);
+  gsCircleMap.setMap(map);
 }
 
 function toggleGsCircle() {
-  trajDraw = !trajDraw;
-  if (trajDraw) {
-  } else {
-  }
+  gsInd = (gsInd+1)%gsList.length;
+  gsCircleMap.setMap(null);
+  drawGsCircle();
 }
 
-// 3d geometric functions:
+// Orbit and Geodesy related geometric functions:
 function ecefToLatLon(r) {
   const A = 6378.137; // equatorial radius km
   const B = A * (1 - 1 / 298.257223563); // polar radius km R_EQ*(1-flattening)
@@ -175,6 +167,15 @@ function ecefToLatLon(r) {
     lat: (Math.atan(v.z / Math.sqrt(v.x * v.x + v.y * v.y)) * 180) / Math.PI,
     lng: (Math.atan2(v.y, v.x) * 180) / Math.PI,
   };
+}
+
+
+function getPv(t){
+//placeholder function for any orbit propagator
+let pv = satellite.propagate()
+return{
+
+}
 }
 
 // Math library, TODO move to another file:

@@ -8,17 +8,16 @@
  * that contains the map. 
  */
 #heading {
-  width: 50%;
-  height: 30%;
+  height: 25px;
   margin-left: 50px;
-  margin-top: 10px;
+  margin-top: 20px;
   vertical-align:top;
 }
 #map {
-  height: 400px;
-  width: 550px;
+  height: 90%;
+  width: 90%;
   border: 2px solid black;
-  margin-top: 10px;
+  margin-left: 50px;
   margin-left: 50px;
 }
 
