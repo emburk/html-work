@@ -13,11 +13,20 @@
     <script src="./node_modules/satellite.js/dist/satellite.min.js"></script>
   </head>
   <body>
-    <div id="heading"> 
-      <button id="btn_tglCircle" onclick= "toggleGsCircle()">GS Switch</button> 
-    </div>
     <div id="map"></div>
 
+
+    <div id="mySidenav" class="sidenav" style="display: none">
+      <p class="infoHeader"> UTCdate:<br><span  id="date" class="infoData"></span></p>
+      <!-- <p class="infoHeader"> visStart:<br><span  id = "visStart" class="infoData"></span></p> -->
+      <p class="infoHeader"> time:<br><span  id = "visMax" class="infoData"></span></p>
+      <!-- <p class="infoHeader"> visEnd:<br><span  id = "visEnd" class="infoData"></span></p> -->
+      <p class="infoHeader"> roll:<br><span  id ="roll" class="infoData"></span></p>
+      <!-- <p class="infoHeader"> elev:<br><span  id = "elev" class="infoData"></span></p> -->
+      <!-- <p class="infoHeader"> cloud:<br><span  id = "cloud" class="infoData"></span></p> -->
+      <button id = "btn_closeHeader" class="infoHeader">&times;</button>
+    </div>
+    
     <!-- 
       The `defer` attribute causes the callback to execute after the full HTML
       document has been parsed. For non-blocking uses, avoiding race conditions,

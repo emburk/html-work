@@ -7,18 +7,9 @@
  * Always set the map height explicitly to define the size of the div element
  * that contains the map. 
  */
-#heading {
-  height: 25px;
-  margin-left: 50px;
-  margin-top: 20px;
-  vertical-align:top;
-}
 #map {
-  height: 90%;
-  width: 90%;
-  border: 2px solid black;
-  margin-left: 50px;
-  margin-left: 50px;
+  height: 100%;
+  width: 100%;
 }
 
 
@@ -28,7 +19,26 @@
 html,
 body {
   height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
 
+/* The side navigation menu */
+.sidenav {
+  background-color: #00000044;
+  gap: 20px;
+  height: 5%; 
+  margin-top: 5px;
+  align-content: center;
+}
+
+.infoHeader {
+  color:#7fff00;
+  font-size: 12pt;
+  margin-top: 0pt;
+}
+
+button.infoHeader{
+  background-color: #00000000;
+}
